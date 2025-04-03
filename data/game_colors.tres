@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="GameColors" load_steps=2 format=3 uid="uid://cf2vx6f0nb3ni"]
+
+[ext_resource type="Script" path="res://data/game_colors.gd" id="1_3pamj"]
+
+[resource]
+script = ExtResource("1_3pamj")
+positive_health = Color(0.486275, 0.988235, 0, 1)
+negative_health = Color(0.698039, 0.133333, 0.133333, 1)

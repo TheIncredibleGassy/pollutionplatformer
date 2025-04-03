@@ -1,0 +1,77 @@
+[gd_resource type="SpriteFrames" load_steps=8 format=3 uid="uid://cbs3l7va3lco4"]
+
+[ext_resource type="Texture2D" uid="uid://cv2coj8kdfxb4" path="res://art/kenney_1_bit_platformer/monochrome_tilemap_transparent_packed.png" id="1_d78c2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4622"]
+atlas = ExtResource("1_d78c2")
+region = Rect2(96, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_asdgm"]
+atlas = ExtResource("1_d78c2")
+region = Rect2(0, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwsq7"]
+atlas = ExtResource("1_d78c2")
+region = Rect2(16, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_506r1"]
+atlas = ExtResource("1_d78c2")
+region = Rect2(32, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubbpn"]
+atlas = ExtResource("1_d78c2")
+region = Rect2(48, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6a4f"]
+atlas = ExtResource("1_d78c2")
+region = Rect2(64, 192, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4622")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4622")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4622")
+}],
+"loop": false,
+"name": &"death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_asdgm")
+}],
+"loop": true,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_asdgm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwsq7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_506r1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubbpn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6a4f")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]

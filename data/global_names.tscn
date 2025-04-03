@@ -1,0 +1,12 @@
+[gd_scene load_steps=5 format=3 uid="uid://bry3clg6euktk"]
+
+[ext_resource type="Script" path="res://data/global_names.gd" id="1_qw3es"]
+[ext_resource type="Resource" uid="uid://dxcjr0qhla26c" path="res://data/animation_names.tres" id="2_c2dxu"]
+[ext_resource type="Resource" uid="uid://y23b4u5jxrwl" path="res://data/blackboard_keys.tres" id="3_jnlvn"]
+[ext_resource type="Resource" uid="uid://ce0mcpvcs07c" path="res://data/group_names.tres" id="4_r6hlj"]
+
+[node name="GlobalNames" type="Node"]
+script = ExtResource("1_qw3es")
+animations = ExtResource("2_c2dxu")
+keys = ExtResource("3_jnlvn")
+groups = ExtResource("4_r6hlj")

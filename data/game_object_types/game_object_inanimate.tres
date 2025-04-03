@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="GameObjectType" load_steps=2 format=3 uid="uid://bhi6hlenqh1x3"]
+
+[ext_resource type="Script" path="res://data/game_object_types/game_object_type.gd" id="1_i4a7j"]
+
+[resource]
+script = ExtResource("1_i4a7j")
+name = &"Inanimate"

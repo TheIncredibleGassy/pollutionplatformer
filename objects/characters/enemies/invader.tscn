@@ -1,0 +1,197 @@
+[gd_scene load_steps=32 format=3 uid="uid://bti7d6t4kfcdi"]
+
+[ext_resource type="Script" path="res://objects/characters/platformer_character_2d.gd" id="1_407p0"]
+[ext_resource type="Script" path="res://objects/characters/facing.gd" id="2_21wc6"]
+[ext_resource type="Script" path="res://objects/health.gd" id="2_ism7k"]
+[ext_resource type="Texture2D" uid="uid://cv2coj8kdfxb4" path="res://art/kenney_1_bit_platformer/monochrome_tilemap_transparent_packed.png" id="3_lxud3"]
+[ext_resource type="Resource" uid="uid://dyh0tcn3n6il4" path="res://state/combat_state.tres" id="4_2qwcv"]
+[ext_resource type="Script" path="res://objects/hurtbox_2d.gd" id="4_2tl0d"]
+[ext_resource type="Script" path="res://weapons/hitbox_2d.gd" id="7_6pl7v"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="8_6a0f5"]
+[ext_resource type="Resource" uid="uid://dfibsnhkbxiwu" path="res://objects/characters/enemies/invader_collision_weapon_stats.tres" id="8_f58ot"]
+[ext_resource type="Resource" uid="uid://oycsbeba1m06" path="res://objects/characters/enemies/invader_stats.tres" id="8_i6f7g"]
+[ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="9_7w85c"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="9_db2k2"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="10_7nn0k"]
+[ext_resource type="Script" path="res://objects/object_blackboard_setter.gd" id="10_puwv5"]
+[ext_resource type="Script" path="res://objects/beehave/is_dead_condition.gd" id="11_28l0v"]
+[ext_resource type="Script" path="res://objects/is_hit_condition.gd" id="14_7erqx"]
+[ext_resource type="Script" path="res://objects/set_shader_action.gd" id="15_uw7sc"]
+[ext_resource type="Shader" path="res://shaders/hit.gdshader" id="16_ixhyg"]
+[ext_resource type="Script" path="res://objects/play_death_action.gd" id="16_pq5ch"]
+[ext_resource type="Script" path="res://objects/play_hit_action.gd" id="18_rfssr"]
+[ext_resource type="Script" path="res://objects/characters/wander_action.gd" id="19_fck4y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7nqn"]
+atlas = ExtResource("3_lxud3")
+region = Rect2(64, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gg84g"]
+atlas = ExtResource("3_lxud3")
+region = Rect2(48, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hry3"]
+atlas = ExtResource("3_lxud3")
+region = Rect2(0, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7tqd8"]
+atlas = ExtResource("3_lxud3")
+region = Rect2(16, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8kck"]
+atlas = ExtResource("3_lxud3")
+region = Rect2(32, 256, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4a21t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7nqn")
+}],
+"loop": false,
+"name": &"death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gg84g")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hry3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7tqd8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8kck")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gg84g")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q8qfy"]
+radius = 5.5
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qkpou"]
+radius = 2.0
+height = 8.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k4kw2"]
+radius = 5.0
+height = 12.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_usd2u"]
+shader = ExtResource("16_ixhyg")
+shader_parameter/time_scale = 20.0
+shader_parameter/gb_ceil = 0.8
+
+[node name="Invader" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "health")]
+collision_layer = 8
+script = ExtResource("1_407p0")
+stats = ExtResource("8_i6f7g")
+sprite = NodePath("Facing/CharacterSprite2D")
+health = NodePath("Health")
+combat_state = ExtResource("4_2qwcv")
+
+[node name="Health" type="Node2D" parent="."]
+script = ExtResource("2_ism7k")
+stats = ExtResource("8_i6f7g")
+combat_state = ExtResource("4_2qwcv")
+
+[node name="Facing" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("2_21wc6")
+character = NodePath("..")
+
+[node name="CharacterSprite2D" type="AnimatedSprite2D" parent="Facing"]
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_4a21t")
+animation = &"hit"
+autoplay = "walk"
+
+[node name="Hurtbox2D" type="Area2D" parent="Facing" node_paths=PackedStringArray("health", "body")]
+script = ExtResource("4_2tl0d")
+health = NodePath("../../Health")
+body = NodePath("../..")
+
+[node name="HurtboxShape" type="CollisionShape2D" parent="Facing/Hurtbox2D"]
+position = Vector2(1.19209e-07, -5.5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_q8qfy")
+
+[node name="Hitbox2D" type="Area2D" parent="Facing"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("7_6pl7v")
+weapon_stats = ExtResource("8_f58ot")
+
+[node name="CollisionHitboxShape2D" type="CollisionShape2D" parent="Facing/Hitbox2D"]
+position = Vector2(3, -5)
+shape = SubResource("CapsuleShape2D_qkpou")
+
+[node name="PhysicsShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_k4kw2")
+
+[node name="Blackboard" type="Node" parent="."]
+script = ExtResource("9_7w85c")
+
+[node name="ObjectBlackboardSetter" type="Node" parent="Blackboard" node_paths=PackedStringArray("blackboard", "health", "hurtbox")]
+script = ExtResource("10_puwv5")
+blackboard = NodePath("..")
+health = NodePath("../../Health")
+hurtbox = NodePath("../../Facing/Hurtbox2D")
+
+[node name="InvaderBeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("8_6a0f5")
+actor_node_path = NodePath("..")
+blackboard = NodePath("../Blackboard")
+actor = NodePath("..")
+
+[node name="SelectorComposite" type="Node" parent="InvaderBeehaveTree"]
+script = ExtResource("9_db2k2")
+
+[node name="DeathSequence" type="Node" parent="InvaderBeehaveTree/SelectorComposite"]
+script = ExtResource("10_7nn0k")
+
+[node name="IsDeadCondition" type="Node" parent="InvaderBeehaveTree/SelectorComposite/DeathSequence"]
+script = ExtResource("11_28l0v")
+
+[node name="PlayDeathAction" type="Node" parent="InvaderBeehaveTree/SelectorComposite/DeathSequence"]
+script = ExtResource("16_pq5ch")
+
+[node name="HitSequence" type="Node" parent="InvaderBeehaveTree/SelectorComposite"]
+script = ExtResource("10_7nn0k")
+
+[node name="IsHitCondition" type="Node" parent="InvaderBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("14_7erqx")
+
+[node name="SetShaderAction" type="Node" parent="InvaderBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("15_uw7sc")
+material = SubResource("ShaderMaterial_usd2u")
+
+[node name="PlayHitAction" type="Node" parent="InvaderBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("18_rfssr")
+object_stats = ExtResource("8_i6f7g")
+
+[node name="RemoveSetShaderAction" type="Node" parent="InvaderBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("15_uw7sc")
+
+[node name="WanderAction" type="Node" parent="InvaderBeehaveTree/SelectorComposite" node_paths=PackedStringArray("timer", "sprite")]
+script = ExtResource("19_fck4y")
+timer = NodePath("WanderDelayTimer")
+sprite = NodePath("../../../Facing/CharacterSprite2D")
+
+[node name="WanderDelayTimer" type="Timer" parent="InvaderBeehaveTree/SelectorComposite/WanderAction"]
+wait_time = 0.5

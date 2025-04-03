@@ -1,0 +1,174 @@
+[gd_scene load_steps=34 format=3 uid="uid://6nfw2b27rjf6"]
+
+[ext_resource type="Script" path="res://objects/characters/player/player.gd" id="1_3kfgq"]
+[ext_resource type="SpriteFrames" uid="uid://cbs3l7va3lco4" path="res://objects/characters/player/player_sprite_frames.tres" id="1_cti2v"]
+[ext_resource type="Resource" uid="uid://db731utoeaijk" path="res://objects/characters/player/player_stats.tres" id="2_cdbk6"]
+[ext_resource type="Resource" uid="uid://ceeflmv4lpaqh" path="res://objects/characters/player/player_input_actions.tres" id="2_f1r52"]
+[ext_resource type="Script" path="res://objects/health.gd" id="3_txhw4"]
+[ext_resource type="Script" path="res://objects/characters/facing.gd" id="3_w0wot"]
+[ext_resource type="Resource" uid="uid://dyh0tcn3n6il4" path="res://state/combat_state.tres" id="4_eddup"]
+[ext_resource type="Script" path="res://objects/characters/shooter.gd" id="6_pjvu7"]
+[ext_resource type="Script" path="res://objects/characters/player/hand_anchor.gd" id="6_thaq4"]
+[ext_resource type="Resource" uid="uid://dy1w4v2qapm6u" path="res://weapons/projectiles/basic/fireable_basic.tres" id="7_x4hal"]
+[ext_resource type="Texture2D" uid="uid://cv2coj8kdfxb4" path="res://art/kenney_1_bit_platformer/monochrome_tilemap_transparent_packed.png" id="9_bqxp3"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="11_m3u7v"]
+[ext_resource type="Script" path="res://objects/object_blackboard_setter.gd" id="12_6pnny"]
+[ext_resource type="Script" path="res://addons/beehave/blackboard.gd" id="12_l2el5"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="12_x6ax0"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence.gd" id="13_em68v"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/simple_parallel.gd" id="13_j03ff"]
+[ext_resource type="Script" path="res://objects/beehave/is_dead_condition.gd" id="14_da3rm"]
+[ext_resource type="Script" path="res://objects/play_death_action.gd" id="15_igep5"]
+[ext_resource type="Script" path="res://objects/is_hit_condition.gd" id="16_j10bl"]
+[ext_resource type="Script" path="res://objects/set_shader_action.gd" id="17_rke87"]
+[ext_resource type="Shader" path="res://shaders/hit.gdshader" id="18_2vguc"]
+[ext_resource type="Script" path="res://objects/play_hit_action.gd" id="19_c0t4t"]
+[ext_resource type="Resource" uid="uid://oycsbeba1m06" path="res://objects/characters/enemies/invader_stats.tres" id="20_b82pl"]
+[ext_resource type="Script" path="res://objects/characters/player/ground_input_action.gd" id="22_g2r7o"]
+[ext_resource type="Script" path="res://objects/set_hurtbox_invincibility.gd" id="23_r2iua"]
+[ext_resource type="Script" path="res://objects/hurtbox_2d.gd" id="24_jmt82"]
+[ext_resource type="Script" path="res://objects/interupt_on_hit_action.gd" id="25_cli7c"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/decorators/delayer.gd" id="28_xg5f1"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4kcyb"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iahsu"]
+atlas = ExtResource("9_bqxp3")
+region = Rect2(128, 193, 16, 13)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wmd8v"]
+shader = ExtResource("18_2vguc")
+shader_parameter/time_scale = 20.0
+shader_parameter/gb_ceil = 0.8
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nyy1u"]
+radius = 4.0
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "health")]
+collision_layer = 2
+script = ExtResource("1_3kfgq")
+stats = ExtResource("2_cdbk6")
+sprite = NodePath("Facing/AnimatedSprite2D")
+health = NodePath("Health")
+combat_state = ExtResource("4_eddup")
+
+[node name="Health" type="Node2D" parent="."]
+script = ExtResource("3_txhw4")
+stats = ExtResource("2_cdbk6")
+combat_state = ExtResource("4_eddup")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CapsuleShape2D_4kcyb")
+
+[node name="Facing" type="Node2D" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("3_w0wot")
+character = NodePath("..")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Facing"]
+position = Vector2(0, -8)
+sprite_frames = ExtResource("1_cti2v")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.921575
+
+[node name="HandAnchor" type="Node2D" parent="."]
+position = Vector2(0, -3)
+script = ExtResource("6_thaq4")
+
+[node name="Shooter" type="RayCast2D" parent="HandAnchor"]
+position = Vector2(21, 0)
+target_position = Vector2(0, 0)
+hit_from_inside = true
+script = ExtResource("6_pjvu7")
+fireable = ExtResource("7_x4hal")
+
+[node name="Sprite2D" type="Sprite2D" parent="HandAnchor/Shooter"]
+position = Vector2(-7, 0)
+rotation = 1.57079
+texture = SubResource("AtlasTexture_iahsu")
+
+[node name="Blackboard" type="Node" parent="."]
+script = ExtResource("12_l2el5")
+
+[node name="ObjectBlackboardSetter" type="Node" parent="Blackboard" node_paths=PackedStringArray("blackboard", "health", "hurtbox")]
+script = ExtResource("12_6pnny")
+blackboard = NodePath("..")
+health = NodePath("../../Health")
+hurtbox = NodePath("../../Hurtbox2D")
+
+[node name="PlayerBeehaveTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("11_m3u7v")
+blackboard = NodePath("../Blackboard")
+actor = NodePath("..")
+
+[node name="SelectorComposite" type="Node" parent="PlayerBeehaveTree"]
+script = ExtResource("12_x6ax0")
+
+[node name="DeathSequence" type="Node" parent="PlayerBeehaveTree/SelectorComposite"]
+script = ExtResource("13_em68v")
+
+[node name="IsDeadCondition" type="Node" parent="PlayerBeehaveTree/SelectorComposite/DeathSequence"]
+script = ExtResource("14_da3rm")
+
+[node name="PlayDeathAction" type="Node" parent="PlayerBeehaveTree/SelectorComposite/DeathSequence"]
+script = ExtResource("15_igep5")
+
+[node name="HitSequence" type="Node" parent="PlayerBeehaveTree/SelectorComposite"]
+script = ExtResource("13_em68v")
+
+[node name="IsHitCondition" type="Node" parent="PlayerBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("16_j10bl")
+
+[node name="SetShaderAction" type="Node" parent="PlayerBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("17_rke87")
+material = SubResource("ShaderMaterial_wmd8v")
+
+[node name="SetHurtboxInvincibility" type="Node" parent="PlayerBeehaveTree/SelectorComposite/HitSequence" node_paths=PackedStringArray("hurtboxes")]
+script = ExtResource("23_r2iua")
+hurtboxes = [NodePath("../../../../Hurtbox2D")]
+invincible = true
+
+[node name="PlayHitAction" type="Node" parent="PlayerBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("19_c0t4t")
+object_stats = ExtResource("20_b82pl")
+
+[node name="RemoveSetShaderAction" type="Node" parent="PlayerBeehaveTree/SelectorComposite/HitSequence"]
+script = ExtResource("17_rke87")
+
+[node name="GroundStateParallelComposite" type="Node" parent="PlayerBeehaveTree/SelectorComposite"]
+script = ExtResource("13_j03ff")
+
+[node name="GroundMovementParallelComposite" type="Node" parent="PlayerBeehaveTree/SelectorComposite/GroundStateParallelComposite"]
+script = ExtResource("13_j03ff")
+
+[node name="GroundInputAction" type="Node" parent="PlayerBeehaveTree/SelectorComposite/GroundStateParallelComposite/GroundMovementParallelComposite" node_paths=PackedStringArray("shooter")]
+script = ExtResource("22_g2r7o")
+shooter = NodePath("../../../../../HandAnchor/Shooter")
+actions = ExtResource("2_f1r52")
+
+[node name="InteruptOnHitAction" type="Node" parent="PlayerBeehaveTree/SelectorComposite/GroundStateParallelComposite/GroundMovementParallelComposite" node_paths=PackedStringArray("hurtboxes", "target_action")]
+script = ExtResource("25_cli7c")
+hurtboxes = [NodePath("../../../../../Hurtbox2D")]
+target_action = NodePath("../GroundInputAction")
+
+[node name="DelayDecorator" type="Node" parent="PlayerBeehaveTree/SelectorComposite/GroundStateParallelComposite"]
+script = ExtResource("28_xg5f1")
+wait_time = 0.25
+
+[node name="SetHurtboxNotInvincible" type="Node" parent="PlayerBeehaveTree/SelectorComposite/GroundStateParallelComposite/DelayDecorator" node_paths=PackedStringArray("hurtboxes")]
+script = ExtResource("23_r2iua")
+hurtboxes = [NodePath("../../../../../Hurtbox2D")]
+
+[node name="Hurtbox2D" type="Area2D" parent="." node_paths=PackedStringArray("health", "body")]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("24_jmt82")
+health = NodePath("../Health")
+body = NodePath("..")
+
+[node name="HurtShape2D" type="CollisionShape2D" parent="Hurtbox2D"]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_nyy1u")

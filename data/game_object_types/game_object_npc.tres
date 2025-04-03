@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="GameObjectType" load_steps=2 format=3 uid="uid://b4ji8jnnrudk1"]
+
+[ext_resource type="Script" path="res://data/game_object_types/game_object_type.gd" id="1_1cmln"]
+
+[resource]
+script = ExtResource("1_1cmln")
+name = &"NPC"
