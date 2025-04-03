@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://enhxv3qie70k"]
+
+[ext_resource type="Script" path="res://systems/combat_text_system.gd" id="1_0tp6u"]
+[ext_resource type="PackedScene" uid="uid://dim0yhet4oo7s" path="res://world.tscn" id="1_q1wc7"]
+[ext_resource type="Resource" uid="uid://dyh0tcn3n6il4" path="res://state/combat_state.tres" id="2_jymy0"]
+[ext_resource type="PackedScene" uid="uid://qsfa7o2oxjka" path="res://ui/health_changed_label.tscn" id="2_qv53m"]
+[ext_resource type="Theme" uid="uid://cfujauigtt3cs" path="res://ui/ui_theme.tres" id="5_5dn1k"]
+
+[node name="Gameplay" type="Node"]
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="CombatTextSystem" type="Node" parent="Systems" node_paths=PackedStringArray("ui_parent")]
+script = ExtResource("1_0tp6u")
+combat_state = ExtResource("2_jymy0")
+text_template = ExtResource("2_qv53m")
+ui_parent = NodePath("../../UI")
+
+[node name="World" parent="." instance=ExtResource("1_q1wc7")]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("5_5dn1k")

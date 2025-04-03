@@ -1,0 +1,103 @@
+[gd_scene load_steps=9 format=3 uid="uid://cd4i34qgfymb2"]
+
+[ext_resource type="Script" path="res://ui/game_over_panel.gd" id="1_vhyjy"]
+[ext_resource type="Resource" uid="uid://dyh0tcn3n6il4" path="res://state/combat_state.tres" id="2_onflj"]
+[ext_resource type="Script" path="res://ui/restart_game_button.gd" id="3_dja7k"]
+
+[sub_resource type="Theme" id="Theme_yut8h"]
+default_font_size = 96
+
+[sub_resource type="Animation" id="Animation_galm1"]
+resource_name = "show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_w6f4i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6qic7"]
+_data = {
+"RESET": SubResource("Animation_w6f4i"),
+"show": SubResource("Animation_galm1")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8n5qh"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="GameOverUI" type="Control" node_paths=PackedStringArray("visible_ui", "animation_player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = SubResource("Theme_yut8h")
+script = ExtResource("1_vhyjy")
+visible_ui = NodePath("Panel")
+animation_player = NodePath("AnimationPlayer")
+combat_state = ExtResource("2_onflj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6qic7")
+}
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_8n5qh")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -338.0
+offset_top = -70.0
+offset_right = 338.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+bbcode_enabled = true
+text = "[center][rainbow freq=1.0 sat=0.8 val=0.8][wave amp=50.0 freq=5.0 connected=1]GAME OVER[/wave][/rainbow][/center]"
+
+[node name="RestartGameButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 761.0
+offset_top = 617.0
+offset_right = 1170.0
+offset_bottom = 757.0
+text = "RESTART"
+script = ExtResource("3_dja7k")
+restart_scene = "res://gameplay.tscn"

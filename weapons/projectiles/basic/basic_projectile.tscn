@@ -1,0 +1,59 @@
+[gd_scene load_steps=10 format=3 uid="uid://dmq5lpjaabsm"]
+
+[ext_resource type="Texture2D" uid="uid://cv2coj8kdfxb4" path="res://art/kenney_1_bit_platformer/monochrome_tilemap_transparent_packed.png" id="1_4bc3p"]
+[ext_resource type="Script" path="res://weapons/projectiles/projectile.gd" id="1_s3m4u"]
+[ext_resource type="Script" path="res://weapons/hitbox_2d.gd" id="3_q58me"]
+[ext_resource type="Resource" uid="uid://bfvr7igfcrdqx" path="res://weapons/projectiles/basic/weapon_stats_basic.tres" id="4_p5hlp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87lnn"]
+atlas = ExtResource("1_4bc3p")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rhfar"]
+atlas = ExtResource("1_4bc3p")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh7ce"]
+atlas = ExtResource("1_4bc3p")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_22js6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87lnn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rhfar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eh7ce")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_68x38"]
+radius = 3.0
+
+[node name="BasicProjectile" type="RigidBody2D" node_paths=PackedStringArray("hitbox")]
+collision_layer = 64
+collision_mask = 33
+gravity_scale = 0.3
+script = ExtResource("1_s3m4u")
+hitbox = NodePath("Hitbox2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_22js6")
+frame_progress = 0.950112
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_68x38")
+
+[node name="Hitbox2D" type="Area2D" parent="."]
+script = ExtResource("3_q58me")
+weapon_stats = ExtResource("4_p5hlp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox2D"]
+shape = SubResource("CircleShape2D_68x38")

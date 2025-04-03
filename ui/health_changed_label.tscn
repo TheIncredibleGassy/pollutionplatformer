@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://qsfa7o2oxjka"]
+
+[ext_resource type="Script" path="res://ui/health_changed_label.gd" id="1_cel1a"]
+[ext_resource type="FontFile" uid="uid://detyy17i0lhi0" path="res://art/fonts/m5x7.ttf" id="1_yh3mb"]
+[ext_resource type="Resource" uid="uid://cf2vx6f0nb3ni" path="res://data/game_colors.tres" id="2_wfotq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kuohs"]
+font = ExtResource("1_yh3mb")
+
+[node name="HealthChangedLabel" type="Label" node_paths=PackedStringArray("timer")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "100
+"
+label_settings = SubResource("LabelSettings_kuohs")
+script = ExtResource("1_cel1a")
+timer = NodePath("Timer")
+move_speed = Vector2(0, -50)
+game_colors = ExtResource("2_wfotq")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true

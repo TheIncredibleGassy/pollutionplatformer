@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://cfujauigtt3cs"]
+
+[ext_resource type="FontFile" uid="uid://detyy17i0lhi0" path="res://art/fonts/m5x7.ttf" id="1_40i75"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p8eoq"]
+bg_color = Color(0.0588235, 0.0588235, 0.0588235, 0.909804)
+
+[resource]
+default_font = ExtResource("1_40i75")
+default_font_size = 48
+Panel/styles/panel = SubResource("StyleBoxFlat_p8eoq")

@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnegh7vt5qag1"]
+
+[ext_resource type="Script" path="res://ui/game_stats.gd" id="1_3dfeq"]
+[ext_resource type="Resource" uid="uid://dyh0tcn3n6il4" path="res://state/combat_state.tres" id="2_gwmvy"]
+
+[sub_resource type="Theme" id="Theme_qtlou"]
+Label/colors/font_color = Color(1, 0.0700893, 0, 1)
+
+[node name="GameStats" type="Panel" node_paths=PackedStringArray("enemies_slain_label", "player_deaths_label")]
+offset_right = 300.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_qtlou")
+script = ExtResource("1_3dfeq")
+combat_state = ExtResource("2_gwmvy")
+enemies_slain_label = NodePath("MarginContainer/VBoxContainer/EnemiesSlainLabel")
+player_deaths_label = NodePath("MarginContainer/VBoxContainer/PlayerDeathsLabel")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="EnemiesSlainLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "UNSET"
+
+[node name="PlayerDeathsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "UNSET"

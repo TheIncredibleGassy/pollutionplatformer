@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://enhxv3qie70k"]
+
+[ext_resource type="Script" path="res://systems/combat_text_system.gd" id="1_0tp6u"]
+[ext_resource type="Script" path="res://gameplay.gd" id="1_n63yn"]
+[ext_resource type="PackedScene" uid="uid://dim0yhet4oo7s" path="res://world.tscn" id="1_q1wc7"]
+[ext_resource type="Resource" uid="uid://dyh0tcn3n6il4" path="res://state/combat_state.tres" id="2_jymy0"]
+[ext_resource type="PackedScene" uid="uid://qsfa7o2oxjka" path="res://ui/health_changed_label.tscn" id="2_qv53m"]
+[ext_resource type="Theme" uid="uid://cfujauigtt3cs" path="res://ui/ui_theme.tres" id="5_5dn1k"]
+[ext_resource type="PackedScene" uid="uid://dnegh7vt5qag1" path="res://ui/game_stats.tscn" id="6_tk2e0"]
+[ext_resource type="PackedScene" uid="uid://cd4i34qgfymb2" path="res://ui/game_over_panel.tscn" id="7_5hjn7"]
+
+[node name="Gameplay" type="Node"]
+script = ExtResource("1_n63yn")
+combat_state = ExtResource("2_jymy0")
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="CombatTextSystem" type="Node" parent="Systems" node_paths=PackedStringArray("parent")]
+script = ExtResource("1_0tp6u")
+combat_state = ExtResource("2_jymy0")
+text_template = ExtResource("2_qv53m")
+parent = NodePath("../../World")
+
+[node name="World" parent="." instance=ExtResource("1_q1wc7")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("5_5dn1k")
+
+[node name="GameStats" parent="CanvasLayer/UI" instance=ExtResource("6_tk2e0")]
+layout_mode = 1
+offset_left = 6.0
+offset_top = 9.0
+offset_right = 306.0
+offset_bottom = 209.0
+
+[node name="GameOverUI" parent="CanvasLayer/UI" instance=ExtResource("7_5hjn7")]
+layout_mode = 1

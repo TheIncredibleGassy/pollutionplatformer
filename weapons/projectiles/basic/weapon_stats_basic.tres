@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponStats" load_steps=5 format=3 uid="uid://bfvr7igfcrdqx"]
+
+[ext_resource type="Script" path="res://weapons/weapon_stats.gd" id="1_mw1yo"]
+[ext_resource type="Script" path="res://weapons/knockback_stats.gd" id="1_o7lio"]
+
+[sub_resource type="Curve" id="Curve_emcqj"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_k8gbd"]
+script = ExtResource("1_o7lio")
+force = 300.0
+duration = 0.15
+curve = SubResource("Curve_emcqj")
+
+[resource]
+script = ExtResource("1_mw1yo")
+damage = 25
+knockback_stats = SubResource("Resource_k8gbd")
